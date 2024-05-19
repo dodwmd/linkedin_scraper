@@ -48,7 +48,8 @@ class Company(Scraper):
     employees = []
     headcount = None
 
-    def __init__(self, linkedin_url = None, name = None, about_us =None, website = None, headquarters = None, founded = None, industry = None, company_type = None, company_size = None, specialties = None, showcase_pages =[], affiliated_companies = [], driver = None, scrape = True, get_employees = True, close_on_complete = True):
+    def __init__(self, linkedin_url = None, name = None, about_us =None, website = None, headquarters = None, founded = None, industry = None, company_type = None, company_size = None, specialties = None, showcase_pages =[], affiliated_companies = [], driver = None, scrape = True, get_employees = True, close_on_complete = True,
+                 company_address=None):
         self.linkedin_url = linkedin_url
         self.name = name
         self.about_us = about_us
@@ -61,6 +62,7 @@ class Company(Scraper):
         self.specialties = specialties
         self.showcase_pages = showcase_pages
         self.affiliated_companies = affiliated_companies
+        self.company_address = company_address
 
         if driver is None:
             try:
@@ -238,6 +240,12 @@ class Company(Scraper):
                 self.founded = values[i+x_off].text.strip()
             elif txt == 'Specialties':
                 self.specialties = "\n".join(values[i+x_off].text.strip().split(", "))
+
+        try:
+            company_address_elem = driver.find_element(By.CLASS_NAME, "org-location-card")
+            self.company_address = company_address_elem.find_element(By.TAG_NAME, "p").text.strip()
+        except NoSuchElementException:
+            pass
 
         try:
             grid = driver.find_element(By.CLASS_NAME, "mt1")

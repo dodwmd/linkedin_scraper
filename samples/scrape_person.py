@@ -15,17 +15,24 @@ while True:
         break
     urls = user_input.split(",")
     results = []
+    start_time = time.time()  # Record start time
     for url in urls:
-        print(f'scraping {url}')
-        person = Person(url,  driver=driver, close_on_complete=False)
-        company = Company(person.experiences[0].linkedin_url, get_employees=False, driver=driver, close_on_complete=False)
-        results.append((person, company))
-
-    print('RESULTS:')
+        try:
+            print(f'SCRAPING {url}')
+            person = Person(url,  driver=driver, close_on_complete=False)
+            company = Company(person.experiences[0].linkedin_url, get_employees=False, driver=driver, close_on_complete=False)
+            results.append((person, company))
+        except Exception as e:
+            print(traceback.format_exc())
+            print(f'ERROR for {url}')
+    end_time = time.time()  # Record end time
+    execution_time = end_time - start_time
+    print(f'RESULTS in {execution_time:.2f} seconds:')
     print('name,location,exp_title,exp_company,exp_linkedin,company_industry,company_website,company_size')
     for person, company in results:
         experience = person.experiences[0]
-        print(f'"{person.name}", '
+        print(f'"{person.linkedin_url}", '
+              f'"{person.name}", '
               f'"{person.location}", '
               f'"{experience.position_title}", '
               f'"{experience.institution_name}", '
@@ -33,4 +40,5 @@ while True:
               f'"{company.industry}", '
               f'"{company.website}", '
               f'"{company.company_size}", '
+              f'"{company.company_address}", '
               )

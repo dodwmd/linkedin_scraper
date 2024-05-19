@@ -175,7 +175,7 @@ class Person(Scraper):
 
 
                     location = location_elem.find_element(By.XPATH,"*").text if location_elem else None
-                    position_title = position_title_elem.find_element(By.XPATH,"*").find_element(By.TAG_NAME,"*").text if position_title_elem else ""
+                    position_title = position_title_elem.find_element(By.XPATH,"*").find_element(By.TAG_NAME,"span").text if position_title_elem else ""
                     work_times = work_times_elem.find_element(By.XPATH,"*").text if work_times_elem else ""
                     times = work_times.split("·")[0].strip() if work_times else ""
                     duration = work_times.split("·")[1].strip() if len(work_times.split("·")) > 1 else None
