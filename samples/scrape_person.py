@@ -28,7 +28,7 @@ while True:
     end_time = time.time()  # Record end time
     execution_time = end_time - start_time
     print(f'RESULTS in {execution_time:.2f} seconds:')
-    print('name,location,exp_title,exp_company,exp_linkedin,company_industry,company_website,company_size')
+    print('linkedin,name,country,exp_title,exp_company,exp_linkedin,company_industry,company_website,company_size,address')
     for person, company in results:
         experience = person.experiences[0]
         print(f'"{person.linkedin_url}", '
