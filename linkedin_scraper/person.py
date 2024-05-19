@@ -159,7 +159,7 @@ class Person(Scraper):
 
             from_date = " ".join(times.split(" ")[:2]) if times else ""
             to_date = " ".join(times.split(" ")[3:]) if times else ""
-            if position_summary_text and any(element.get_attribute("pvs-list__container") for element in position_summary_text.find_elements(By.TAG_NAME, "*")):
+            if position_summary_text and any(element.get_attribute("class") and "pvs-list__container" in element.get_attribute("class") for element in position_summary_text.find_elements(By.TAG_NAME, "*")):
                 inner_positions = (position_summary_text.find_element(By.CLASS_NAME,"pvs-list__container")
                                   .find_element(By.XPATH,"*").find_element(By.XPATH,"*").find_element(By.XPATH,"*")
                                   .find_elements(By.CLASS_NAME,"pvs-list__paged-list-item"))
