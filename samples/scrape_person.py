@@ -1,4 +1,7 @@
 import os
+import time
+import traceback
+
 from linkedin_scraper import Person, actions, Company
 from selenium import webdriver
 
@@ -7,7 +10,7 @@ driver = webdriver.Chrome()
 email = os.getenv("LINKEDIN_USER")
 password = os.getenv("LINKEDIN_PASSWORD")
 actions.login(driver, email, password)  # if email and password isnt given, it'll prompt in terminal
-user_input = []
+user_input = ""
 urls = []
 while True:
     user_input = input("Enter a comma-separated list of linkedin urls: ")
