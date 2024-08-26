@@ -184,7 +184,7 @@ class Company(Scraper):
     def scrape_logged_in(self, get_employees = True, close_on_complete = True):
         driver = self.driver
 
-        driver.get(self.linkedin_url)
+        # driver.get(self.linkedin_url)
 
         _ = WebDriverWait(driver, 3).until(EC.presence_of_all_elements_located((By.XPATH, '//div[@dir="ltr"]')))
 
@@ -201,8 +201,8 @@ class Company(Scraper):
         except:
           driver.get(os.path.join(self.linkedin_url, "about"))
 
-        _ = WebDriverWait(driver, 3).until(EC.presence_of_all_elements_located((By.TAG_NAME, 'section')))
-        time.sleep(3)
+        _ = WebDriverWait(driver, 5).until(EC.presence_of_all_elements_located((By.TAG_NAME, 'section')))
+        # time.sleep(3)
 
         if 'Cookie Policy' in driver.find_elements(By.TAG_NAME, "section")[1].text or any(classname in driver.find_elements(By.TAG_NAME, "section")[1].get_attribute('class') for classname in AD_BANNER_CLASSNAME):
             section_id = 4
@@ -211,7 +211,7 @@ class Company(Scraper):
        #section ID is no longer needed, we are using class name now.
         #grid = driver.find_elements_by_tag_name("section")[section_id]
         grid = driver.find_element(By.CLASS_NAME, "artdeco-card.org-page-details-module__card-spacing.artdeco-card.org-about-module__margin-bottom")
-        print(grid)
+        # print(grid)
         descWrapper = grid.find_elements(By.TAG_NAME, "p")
         if len(descWrapper) > 0:
             self.about_us = descWrapper[0].text.strip()
@@ -260,37 +260,37 @@ class Company(Scraper):
         driver.execute_script("window.scrollTo(0, Math.ceil(document.body.scrollHeight/2));")
 
 
-        try:
-            _ = WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.CLASS_NAME, 'company-list')))
-            showcase, affiliated = driver.find_elements(By.CLASS_NAME, "company-list")
-            driver.find_element(By.ID,"org-related-companies-module__show-more-btn").click()
+        # try:
+        #     _ = WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.CLASS_NAME, 'company-list')))
+        #     showcase, affiliated = driver.find_elements(By.CLASS_NAME, "company-list")
+        #     driver.find_element(By.ID,"org-related-companies-module__show-more-btn").click()
+        #
+        #     # get showcase
+        #     for showcase_company in showcase.find_elements(By.CLASS_NAME, "org-company-card"):
+        #         companySummary = CompanySummary(
+        #                 linkedin_url = showcase_company.find_element(By.CLASS_NAME, "company-name-link").get_attribute("href"),
+        #                 name = showcase_company.find_element(By.CLASS_NAME, "company-name-link").text.strip(),
+        #                 followers = showcase_company.find_element(By.CLASS_NAME, "company-followers-count").text.strip()
+        #             )
+        #         self.showcase_pages.append(companySummary)
+        #
+        #     # affiliated company
+        #
+        #     for affiliated_company in showcase.find_element(By.CLASS_NAME, "org-company-card"):
+        #         companySummary = CompanySummary(
+        #                  linkedin_url = affiliated_company.find_element(By.CLASS_NAME, "company-name-link").get_attribute("href"),
+        #                 name = affiliated_company.find_element(By.CLASS_NAME, "company-name-link").text.strip(),
+        #                 followers = affiliated_company.find_element(By.CLASS_NAME, "company-followers-count").text.strip()
+        #                 )
+        #         self.affiliated_companies.append(companySummary)
+        #
+        # except:
+        #     pass
 
-            # get showcase
-            for showcase_company in showcase.find_elements(By.CLASS_NAME, "org-company-card"):
-                companySummary = CompanySummary(
-                        linkedin_url = showcase_company.find_element(By.CLASS_NAME, "company-name-link").get_attribute("href"),
-                        name = showcase_company.find_element(By.CLASS_NAME, "company-name-link").text.strip(),
-                        followers = showcase_company.find_element(By.CLASS_NAME, "company-followers-count").text.strip()
-                    )
-                self.showcase_pages.append(companySummary)
+        # if get_employees:
+        #     self.employees = self.get_employees()
 
-            # affiliated company
-
-            for affiliated_company in showcase.find_element(By.CLASS_NAME, "org-company-card"):
-                companySummary = CompanySummary(
-                         linkedin_url = affiliated_company.find_element(By.CLASS_NAME, "company-name-link").get_attribute("href"),
-                        name = affiliated_company.find_element(By.CLASS_NAME, "company-name-link").text.strip(),
-                        followers = affiliated_company.find_element(By.CLASS_NAME, "company-followers-count").text.strip()
-                        )
-                self.affiliated_companies.append(companySummary)
-
-        except:
-            pass
-
-        if get_employees:
-            self.employees = self.get_employees()
-
-        driver.get(self.linkedin_url)
+        # driver.get(self.linkedin_url)
 
         if close_on_complete:
             driver.close()

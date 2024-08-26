@@ -21,7 +21,7 @@ while True:
     start_time = time.time()  # Record start time
     for url in urls:
         try:
-            print(f'SCRAPING {url}')
+            print(f'LESS SCRAPING {url}')
             person = Person(url,  driver=driver, close_on_complete=False)
             company = Company(person.experiences[0].linkedin_url, get_employees=False, driver=driver, close_on_complete=False)
             results.append((person, company))

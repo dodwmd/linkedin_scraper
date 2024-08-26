@@ -304,9 +304,9 @@ class Person(Scraper):
         self.get_experiences()
 
         # get education
-        self.get_educations()
+        # self.get_educations()
 
-        driver.get(self.linkedin_url)
+        # driver.get(self.linkedin_url)
         if close_on_complete:
             driver.quit()
 
