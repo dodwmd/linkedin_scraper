@@ -7,8 +7,9 @@ from . import constants as c
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import TimeoutException, NoAlertPresentException
 
 
 @dataclass
@@ -70,8 +71,17 @@ class Scraper:
         sleep(int(duration))
 
     def focus(self):
-        self.driver.execute_script('alert("Focus window")')
-        self.driver.switch_to.alert.accept()
+        try:
+            self.driver.execute_script('window.focus();')
+        except:
+            pass
+        
+        try:
+            WebDriverWait(self.driver, 3).until(EC.alert_is_present())
+            alert = self.driver.switch_to.alert
+            alert.accept()
+        except (TimeoutException, NoAlertPresentException):
+            pass
 
     def mouse_click(self, elem):
         action = webdriver.ActionChains(self.driver)
